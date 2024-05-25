@@ -1,0 +1,46 @@
+body {
+  text-align: center;
+  background: #23272a;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  overflow-x: hidden;
+}
+
+canvas {
+  border: 1px solid white;
+}
+
+/* Add a black background color to the top navigation */
+.nav {
+  background-color: #141618;
+  overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.nav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.nav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Add a color to the active/current link */
+.nav a.active {
+  background-color: #04aa6d;
+  color: white;
+}
+
+#resetButton {
+  background-color: rgb(223, 50, 50);
+}
+
+#startButton {
+  background-color: rgb(223, 212, 50);
+}
