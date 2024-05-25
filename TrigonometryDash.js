@@ -193,10 +193,10 @@ function death() {
 
 // if player completes the level, check if it's the first time, if true add to levels complete, else do not, will set you back to the selection stage
 function finish() {
-  if (firsttimeComplete1 == true) {
+  if (firsttimeComplete1 == true && levelselection == 1) {
     levelsComplete++;
     firsttimeComplete1 = false;
-  } else if (firsttimeComplete2 == true) {
+  } else if (firsttimeComplete2 == true && levelselection == 2) {
     levelsComplete++;
     firsttimeComplete2 = false;
   }

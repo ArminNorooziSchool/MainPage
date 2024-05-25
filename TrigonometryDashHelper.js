@@ -429,9 +429,7 @@ function platformCollision() {
       } else if (platform.Level) {
         levelselection = map[i].LevelNum;
         // if player wants to play level then set stage to level and initialize enemies, reset healthbar, reset health, player position and timer
-        if (+map[i].LevelNum - 1 !== levelsComplete) {
-          alert(`Please Complete Level ${+map[i].LevelNum - 1}`);
-        } else {
+        if (levelselection - 1 <= levelsComplete) {
           if (confirm(`Would you like to play Level ${map[i].LevelNum}?`)) {
             console.log(levelselection);
             currentPlatforms = eval("levelPlatforms" + levelselection);
@@ -444,6 +442,8 @@ function platformCollision() {
             healthbar.w = 300;
             timer = 0;
           }
+        } else {
+          alert(`Please Complete Level ${+map[i].LevelNum - 1}`);
         }
         // if you touch finish platform, endLevel will be called
       } else if (platform.finish) {
