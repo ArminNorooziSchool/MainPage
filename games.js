@@ -8,7 +8,7 @@ cnv.height = 2000;
 let allGames = [
   ["Trigonometric Moments", "img/geoThumb.png", "geo.html"],
   ["Flappy Copter", "img/heliBlueTransparent.png", "flappy.html"],
-  ["Trigonometry Dash", "img/playerimage.png", "TrigonometryDash.html"],
+  ["Trigonometry Dash", "img/playerImage.png", "TrigonometryDash.html"],
   ["Trigonometric Moments 2", "img/geoThumb2.png", "geo2.html"],
   ["Game 5", "image5.png", "https://example.com/game5"],
   ["Game 6", "image6.png", "https://example.com/game6"],
