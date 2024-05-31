@@ -207,183 +207,208 @@ function finish() {
   }, 3000);
 }
 
+let lastFrameTime = 0;
+const targetFPS = 120;
+const targetFrameTime = 1000 / targetFPS;
+
 // Program Loop
-function draw() {
-  // Call Images
-  let Level1Back = document.createElement("img");
-  Level1Back.src = "img/Lvl1Back.jpg";
-  let normalPlatform = document.createElement("img");
-  normalPlatform.src = "img/Grass.png";
-  let lavaPlatform = document.createElement("img");
-  lavaPlatform.src = "img/lava.png";
-  let finishPlatform = document.createElement("img");
-  finishPlatform.src = "img/Yellow.png";
-  let enemyImage = document.createElement("img");
-  enemyImage.src = "img/Mace.png";
-  let playerImage = document.createElement("img");
-  playerImage.src = "img/playerImage.png";
+function draw(currentTime) {
+  // Calculate the time difference between the current and last frame
+  const deltaTime = currentTime - lastFrameTime;
 
-  // Call game function to start the game and dictate what stage we are in, also have the view follow the player
-  gameStage();
-  view.x = player.x - 585;
+  // Only update and render the game if enough time has passed
+  if (deltaTime >= targetFrameTime) {
+    lastFrameTime = currentTime;
 
-  // Logic
-  if (isGameStarted) {
-    // Call my collision functions
-    platformCollision();
-    enemyCollision();
+    // Call Images
+    let Level1Back = document.createElement("img");
+    Level1Back.src = "img/Lvl1Back.jpg";
+    let normalPlatform = document.createElement("img");
+    normalPlatform.src = "img/Grass.png";
+    let lavaPlatform = document.createElement("img");
+    lavaPlatform.src = "img/lava.png";
+    let finishPlatform = document.createElement("img");
+    finishPlatform.src = "img/Yellow.png";
+    let enemyImage = document.createElement("img");
+    enemyImage.src = "img/Mace.png";
+    let playerImage = document.createElement("img");
+    playerImage.src = "img/playerImage.png";
 
-    // Player can jump off ground
-    if (player.y + player.h === cnv.height) {
-      player.jumping = false;
-    }
-  }
+    // Call game function to start the game and dictate what stage we are in, also have the view follow the player
+    gameStage();
+    view.x = player.x - 585;
 
-  // Clear the previous frame
-  ctx.clearRect(0, 0, cnv.width, cnv.height);
-  viewctx.clearRect(0, 0, view.width, view.height);
+    // Logic
+    if (isGameStarted) {
+      // Call my collision functions
+      platformCollision();
+      enemyCollision();
 
-  // Draw player
-  ctx.fillStyle = "DarkOrange";
-  ctx.fillRect(player.x, player.y, player.w, player.h);
-  viewctx.fillStyle = "DarkOrange";
-  viewctx.fillRect(player.x - view.x, player.y, player.w, player.h);
-
-  // Draw the different platform types with different colors
-  for (let i = 0; i < currentPlatforms.length; i++) {
-    let platform = currentPlatforms[i];
-
-    if (platform.Start) {
-      ctx.fillStyle = "BlueViolet";
-      viewctx.fillStyle = "BlueViolet";
-    } else if (platform.Continue) {
-      ctx.fillStyle = "lime";
-      viewctx.fillStyle = "lime";
-    } else {
-      ctx.fillStyle = "aqua";
-      viewctx.fillStyle = "aqua";
-    }
-
-    ctx.fillRect(platform.x, platform.y, platform.w, platform.h);
-    viewctx.fillRect(platform.x - view.x, platform.y, platform.w, platform.h);
-  }
-
-  // If player is in level run this logic
-  if (stage == "level") {
-    // if level 1 then...
-    if (currentStage == 1) {
-      viewctx.drawImage(Level1Back, 0, 0, 1200, 870);
-    }
-
-    // background of the healthbar color
-    viewctx.fillStyle = "red";
-    viewctx.fillRect(
-      backhealthbar.x,
-      backhealthbar.y,
-      backhealthbar.w,
-      backhealthbar.h
-    );
-
-    // foreground of the healthbar color
-    viewctx.fillStyle = "green";
-    viewctx.fillRect(healthbar.x, healthbar.y, healthbar.w, healthbar.h);
-
-    // initialize timer
-    viewctx.font = "20px Consolas";
-    viewctx.fillStyle = "orange";
-    viewctx.fillText("Time: " + (timer / 60).toFixed(3) + " Seconds", 150, 20);
-
-    // Draw Platforms based on current stage and what type of platform, also load the images using drawImage()
-    for (let i = 0; i < currentPlatforms.length; i++) {
-      let platform = currentPlatforms[i];
-
-      viewctx.fillStyle = "aqua";
-
-      ctx.fillRect(platform.x, platform.y, platform.w, platform.h);
-      viewctx.fillRect(platform.x - view.x, platform.y, platform.w, platform.h);
-
-      if (platform.lava) {
-        viewctx.drawImage(
-          lavaPlatform,
-          currentPlatforms[i].x - view.x,
-          currentPlatforms[i].y,
-          currentPlatforms[i].w,
-          currentPlatforms[i].h + 30
-        );
-      } else if (platform.finish) {
-        viewctx.drawImage(
-          finishPlatform,
-          currentPlatforms[i].x - view.x,
-          currentPlatforms[i].y,
-          currentPlatforms[i].w,
-          currentPlatforms[i].h
-        );
-      } else {
-        viewctx.drawImage(
-          normalPlatform,
-          currentPlatforms[i].x - view.x,
-          currentPlatforms[i].y,
-          currentPlatforms[i].w,
-          currentPlatforms[i].h
-        );
+      // Player can jump off ground
+      if (player.y + player.h === cnv.height) {
+        player.jumping = false;
       }
     }
 
-    // draw enemies and their image
-    for (let i = 0; i < enemies.length; i++) {
-      let enemi = enemies[i];
+    // Clear the previous frame
+    ctx.clearRect(0, 0, cnv.width, cnv.height);
+    viewctx.clearRect(0, 0, view.width, view.height);
 
+    // Draw player
+    ctx.fillStyle = "DarkOrange";
+    ctx.fillRect(player.x, player.y, player.w, player.h);
+    viewctx.fillStyle = "DarkOrange";
+    viewctx.fillRect(player.x - view.x, player.y, player.w, player.h);
+
+    // Draw the different platform types with different colors
+    for (let i = 0; i < currentPlatforms.length; i++) {
+      let platform = currentPlatforms[i];
+
+      if (platform.Start) {
+        ctx.fillStyle = "BlueViolet";
+        viewctx.fillStyle = "BlueViolet";
+      } else if (platform.Continue) {
+        ctx.fillStyle = "lime";
+        viewctx.fillStyle = "lime";
+      } else {
+        ctx.fillStyle = "aqua";
+        viewctx.fillStyle = "aqua";
+      }
+
+      ctx.fillRect(platform.x, platform.y, platform.w, platform.h);
+      viewctx.fillRect(platform.x - view.x, platform.y, platform.w, platform.h);
+    }
+
+    // If player is in level run this logic
+    if (stage == "level") {
+      // if level 1 then...
+      if (currentStage == 1) {
+        viewctx.drawImage(Level1Back, 0, 0, 1200, 870);
+      }
+
+      // background of the healthbar color
       viewctx.fillStyle = "red";
-
-      viewctx.fillRect(enemi.x - view.x, enemi.y, enemi.w, enemi.h);
-
-      viewctx.drawImage(
-        enemyImage,
-        enemi.x - view.x - 10,
-        enemi.y - 5,
-        enemi.w + 15,
-        enemi.h + 12
-      );
-    }
-    // draw bullets
-    viewctx.fillStyle = "red";
-    for (let i = 0; i < bullets.length; i++) {
-      ctx.fillRect(bullets[i].x, bullets[i].y, bullets[i].w, bullets[i].h);
       viewctx.fillRect(
-        bullets[i].x - view.x,
-        bullets[i].y,
-        bullets[i].w,
-        bullets[i].h
+        backhealthbar.x,
+        backhealthbar.y,
+        backhealthbar.w,
+        backhealthbar.h
+      );
+
+      // foreground of the healthbar color
+      viewctx.fillStyle = "green";
+      viewctx.fillRect(healthbar.x, healthbar.y, healthbar.w, healthbar.h);
+
+      // initialize timer
+      viewctx.font = "20px Consolas";
+      viewctx.fillStyle = "orange";
+      viewctx.fillText(
+        "Time: " + (timer / 60).toFixed(3) + " Seconds",
+        150,
+        20
+      );
+
+      // Draw Platforms based on current stage and what type of platform, also load the images using drawImage()
+      for (let i = 0; i < currentPlatforms.length; i++) {
+        let platform = currentPlatforms[i];
+
+        viewctx.fillStyle = "aqua";
+
+        ctx.fillRect(platform.x, platform.y, platform.w, platform.h);
+        viewctx.fillRect(
+          platform.x - view.x,
+          platform.y,
+          platform.w,
+          platform.h
+        );
+
+        if (platform.lava) {
+          viewctx.drawImage(
+            lavaPlatform,
+            currentPlatforms[i].x - view.x,
+            currentPlatforms[i].y,
+            currentPlatforms[i].w,
+            currentPlatforms[i].h + 30
+          );
+        } else if (platform.finish) {
+          viewctx.drawImage(
+            finishPlatform,
+            currentPlatforms[i].x - view.x,
+            currentPlatforms[i].y,
+            currentPlatforms[i].w,
+            currentPlatforms[i].h
+          );
+        } else {
+          viewctx.drawImage(
+            normalPlatform,
+            currentPlatforms[i].x - view.x,
+            currentPlatforms[i].y,
+            currentPlatforms[i].w,
+            currentPlatforms[i].h
+          );
+        }
+      }
+
+      // draw enemies and their image
+      for (let i = 0; i < enemies.length; i++) {
+        let enemi = enemies[i];
+
+        viewctx.fillStyle = "red";
+
+        viewctx.fillRect(enemi.x - view.x, enemi.y, enemi.w, enemi.h);
+
+        viewctx.drawImage(
+          enemyImage,
+          enemi.x - view.x - 10,
+          enemi.y - 5,
+          enemi.w + 15,
+          enemi.h + 12
+        );
+      }
+      // draw bullets
+      viewctx.fillStyle = "red";
+      for (let i = 0; i < bullets.length; i++) {
+        ctx.fillRect(bullets[i].x, bullets[i].y, bullets[i].w, bullets[i].h);
+        viewctx.fillRect(
+          bullets[i].x - view.x,
+          bullets[i].y,
+          bullets[i].w,
+          bullets[i].h
+        );
+      }
+
+      // load player image
+      viewctx.drawImage(
+        playerImage,
+        player.x - view.x - 10,
+        player.y - 10,
+        player.w + 15,
+        player.h + 12
       );
     }
 
-    // load player image
-    viewctx.drawImage(
-      playerImage,
-      player.x - view.x - 10,
-      player.y - 10,
-      player.w + 15,
-      player.h + 12
-    );
-  }
+    // Draw End Screen upon death
+    if (stage == "death") {
+      viewctx.font = "60px Consolas";
+      viewctx.fillStyle = "green";
+      viewctx.fillText("You Died", 300, 200);
+    }
 
-  // Draw End Screen upon death
-  if (stage == "death") {
-    viewctx.font = "60px Consolas";
-    viewctx.fillStyle = "green";
-    viewctx.fillText("You Died", 300, 200);
-  }
+    // draw end screen upon level completion
+    if (stage == "finish") {
+      console.log("works");
+      viewctx.font = "60px Consolas";
+      viewctx.fillStyle = "green";
+      viewctx.fillText("Congratulations!", 300, 300);
+      viewctx.fillText(`You beat level ${levelselection}!`, 300, 400);
+      viewctx.fillText(
+        "Time: " + (timer / 60).toFixed(3) + " Seconds",
+        300,
+        600
+      );
+    }
 
-  // draw end screen upon level completion
-  if (stage == "finish") {
-    console.log("works");
-    viewctx.font = "60px Consolas";
-    viewctx.fillStyle = "green";
-    viewctx.fillText("Congratulations!", 300, 300);
-    viewctx.fillText(`You beat level ${levelselection}!`, 300, 400);
-    viewctx.fillText("Time: " + (timer / 60).toFixed(3) + " Seconds", 300, 600);
+    // request another frame
+    requestAnimationFrame(draw);
   }
-
-  // request another frame
-  requestAnimationFrame(draw);
 }
