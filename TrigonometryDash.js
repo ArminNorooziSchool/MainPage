@@ -208,7 +208,7 @@ function finish() {
 }
 
 let lastFrameTime = 0;
-const targetFPS = 120;
+const targetFPS = 60;
 const targetFrameTime = 1000 / targetFPS;
 
 // Program Loop
