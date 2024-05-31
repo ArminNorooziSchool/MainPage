@@ -408,7 +408,7 @@ function draw(currentTime) {
       );
     }
 
-    // request another frame
+     setTimeout(() => {
     requestAnimationFrame(draw);
-  }
+  }, targetFrameTime);
 }
