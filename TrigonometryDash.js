@@ -208,7 +208,7 @@ function finish() {
 }
 
 let lastFrameTime = 0;
-const targetFPS = 60;
+const targetFPS = 120;
 const targetFrameTime = 1000 / targetFPS;
 
 // Program Loop
@@ -408,7 +408,8 @@ function draw(currentTime) {
       );
     }
 
-     setTimeout(() => {
-    requestAnimationFrame(draw);
-  }, targetFrameTime);
+    setTimeout(() => {
+      requestAnimationFrame(draw);
+    }, targetFrameTime);
+  }
 }
